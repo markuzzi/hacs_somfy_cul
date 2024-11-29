@@ -1,0 +1,19 @@
+{
+  "domain": "somfy_cul",
+  "version": "0.1.0",
+  "name": "Somfy CUL",
+  "codeowners": [
+    "@markuzzi"
+  ],
+  "dependencies": [],
+  "documentation": "https://github.com/markuzzi/hacs_somfy_cul",
+  "issue_tracker": "https://github.com/markuzzi/hacs_somfy_cul/issues",
+  "homekit": {},
+  "iot_class": "assumed_state",
+  "integration_type": "hub",
+  "requirements": [
+    "pyserial==3.5"
+  ],
+  "ssdp": [],
+  "zeroconf": []
+}

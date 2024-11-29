@@ -1,0 +1,24 @@
+async_prog_cover:
+  description: "Set the cover into prog mode"
+  fields:
+    entity_id:
+      description: "The entity ID of the cover"
+      example: cover.somfy_cul_abcd
+async_open_cover:
+  description: "Open the cover"
+  fields:
+    entity_id:
+      description: "The entity ID of the cover"
+      example: cover.somfy_cul_abcd
+async_close_cover:
+  description: "Close the cover"
+  fields:
+    entity_id:
+      description: "The entity ID of the cover"
+      example: cover.somfy_cul_abcd
+async_stop_cover:
+  description: "Stop the cover"
+  fields:
+    entity_id:
+      description: "The entity ID of the cover"
+      example: cover.somfy_cul_abcd
