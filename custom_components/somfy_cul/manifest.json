@@ -1,6 +1,6 @@
 {
   "domain": "somfy_cul",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "name": "Somfy CUL",
   "codeowners": [
     "@markuzzi"
