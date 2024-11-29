@@ -101,7 +101,7 @@ def setup_platform(
         "reverse": config.get(CONF_REVERSED, False),
     }
 
-    cover = SomfyShade(hass, somfy_cul, **cover_config)
+    cover = SomfyCulShade(hass, somfy_cul, **cover_config)
 
     _LOGGER.debug(
         "Adding Somfy Cover: %s with address %s",
@@ -112,7 +112,7 @@ def setup_platform(
     add_entities([cover])
 
 
-class SomfyShade(RestoreEntity, CoverEntity):
+class SomfyCulShade(RestoreEntity, CoverEntity):
     """Object for controlling a Somfy cover."""
 
     _attr_should_poll = False
@@ -173,6 +173,9 @@ class SomfyShade(RestoreEntity, CoverEntity):
 
         self._attr_unique_id = address
         self._attr_device_class = device_class
+        self._attr_is_closed = True
+        self._attr_is_opening = False
+        self._attr_is_closing = False
 
         self._attr_device_info = DeviceInfo(
             identifiers={(DOMAIN, self._address)},

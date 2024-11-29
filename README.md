@@ -12,7 +12,7 @@ Further information about the CUL: [Product page](http://busware.de/tiki-index.p
 
 SOMFY RTS CUL Integration can be installed via [HACS](https://hacs.xyz/), or by manually copying the [`somfy_cul`](https://github.com/markuzzi/hacs_somfy_cul) directory to Home Assistant's `config/custom_components/` directory.
 
-[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=Markus+Luckey&repository=https%3A%2F%2Fgithub.com%2Fmarkuzzi%2Fhacs_somfy_cul)
+[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?repository=https%3A%2F%2Fgithub.com%2Fmarkuzzi%2Fhacs_somfy_cul)
 
 ## Configuration
 
@@ -22,8 +22,8 @@ Create the CUL hub by adding the following to your `configuration.yaml`.
 
 ```yaml
 somfy_cul:
-  cul_path: /dev/null
-  baud_rate: 3000
+  cul_path: /dev/ttyAMA0
+  baud_rate: 38400
 ```
 
 ### Covers / Shades
