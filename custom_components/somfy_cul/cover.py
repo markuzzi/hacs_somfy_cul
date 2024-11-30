@@ -273,7 +273,7 @@ class SomfyCulShade(RestoreEntity, CoverEntity):
 
     async def _save_state_to_yaml(self):
         """Save the current state to the file using self._address as the key."""
-        state_data = self._read_state_yaml()
+        state_data = await self._read_state_yaml()
 
         # Update state for the current address
         state_data[self._address] = self._get_state()
@@ -285,7 +285,7 @@ class SomfyCulShade(RestoreEntity, CoverEntity):
 
     async def _load_state_from_yaml(self):
         """Load the state for self._address from the file, if it exists."""
-        state_data = self._read_state_yaml()
+        state_data = await self._read_state_yaml()
 
         # Load state for the current address if it exists
         if self._address in state_data:
