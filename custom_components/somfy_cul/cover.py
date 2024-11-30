@@ -331,9 +331,17 @@ class SomfyCulShade(RestoreEntity, CoverEntity):
         self._attr_current_cover_position = state.get(
             ATTR_CURRENT_POS, self._attr_current_cover_position
         )
+        self._attr_extra_state_attributes = {
+            "enc_key": self._enc_key,
+            "rolling_code": self._rolling_code,
+        }
         self.schedule_update_ha_state(force_refresh=True)
 
     def _async_save_state(self):
+        self._attr_extra_state_attributes = {
+            "enc_key": self._enc_key,
+            "rolling_code": self._rolling_code,
+        }
         self.schedule_update_ha_state()
         self.hass.loop.call_soon_threadsafe(self._async_save_state_task)
 
