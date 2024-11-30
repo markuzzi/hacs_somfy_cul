@@ -269,7 +269,7 @@ class SomfyCulShade(RestoreEntity, CoverEntity):
 
     async def async_reload_state(self, **kwargs: Any) -> None:
         """Reload the state from the YAML file."""
-        self._load_state_from_yaml()
+        await self._load_state_from_yaml()
 
     async def _save_state_to_yaml(self):
         """Save the current state to the file using self.entity_id as the key."""
