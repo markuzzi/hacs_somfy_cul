@@ -25,6 +25,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.restore_state import RestoreEntity
 from homeassistant.helpers.typing import ConfigType, DiscoveryInfoType
 
+from .cul import Cul
 from .const import (
     ATTR_CURRENT_POS,
     ATTR_DOWN_TIME,
@@ -41,6 +42,7 @@ from .const import (
     SERVICE_CLOSE,
     SERVICE_OPEN,
     SERVICE_PROG,
+    SERVICE_RELOAD,
     SERVICE_STOP,
 )
 
@@ -121,8 +123,8 @@ class SomfyCulShade(RestoreEntity, CoverEntity):
     _attr_name = None
     _attr_unique_id = None
 
-    _enc_key = 1
-    _rolling_code = 0
+    _enc_key: int = 1
+    _rolling_code: int = 0
     _up_time = None
     _down_time = None
 
@@ -149,10 +151,10 @@ class SomfyCulShade(RestoreEntity, CoverEntity):
     def __init__(
         self,
         hass: HomeAssistant,
-        somfy_cul,
-        address,
-        up_time=None,
-        down_time=None,
+        somfy_cul:Cul,
+        address:str,
+        up_time:int=None,
+        down_time:int=None,
         name="SomfyCover",
         reverse=False,
         device_class=CoverDeviceClass.SHADE,
@@ -261,12 +263,41 @@ class SomfyCulShade(RestoreEntity, CoverEntity):
         self.platform.async_register_entity_service(
             SERVICE_STOP, {}, "async_stop_cover"
         )
+        self.platform.async_register_entity_service(
+            SERVICE_RELOAD, {}, "async_reload_state"
+        )
+
+    async def async_reload_state(self, **kwargs: Any) -> None:
+        """Reload the state from the YAML file."""
+        self._load_state_from_yaml()
 
     async def _save_state_to_yaml(self):
         """Save the current state to the file using self._address as the key."""
-        state_file_path = self._get_state_file_path()
+        state_data = self._read_state_yaml()
 
-        # Load existing state from the file if it exists
+        # Update state for the current address
+        state_data[self._address] = self._get_state()
+
+        # Save updated state back to the file
+        state_file_path = self._get_state_file_path()
+        async with aiofiles.open(state_file_path, mode="w", encoding="utf-8") as file:
+            await file.write(yaml.safe_dump(state_data, default_flow_style=False))
+
+    async def _load_state_from_yaml(self):
+        """Load the state for self._address from the file, if it exists."""
+        state_data = self._read_state_yaml()
+
+        # Load state for the current address if it exists
+        if self._address in state_data:
+            self._set_state(state_data[self._address])
+        else:
+            return False
+
+        return True
+
+    async def _read_state_yaml(self):
+        """Load the state from the file, if it exists."""
+        state_file_path = self._get_state_file_path()
         state_data = {}
         if os.path.exists(state_file_path):  # noqa: PTH110
             async with aiofiles.open(state_file_path, encoding="utf-8") as file:
@@ -275,37 +306,7 @@ class SomfyCulShade(RestoreEntity, CoverEntity):
                     state_data = yaml.safe_load(content) or {}
                 except yaml.YAMLError as e:
                     _LOGGER.error("Error reading YAML file: %s", e)
-
-        # Update state for the current address
-        state_data[self._address] = self._get_state()
-
-        # Save updated state back to the file
-        async with aiofiles.open(state_file_path, mode="w", encoding="utf-8") as file:
-            await file.write(yaml.safe_dump(state_data, default_flow_style=False))
-
-    async def _load_state_from_yaml(self):
-        """Load the state for self._address from the file, if it exists."""
-        state_file_path = self._get_state_file_path()
-
-        # Load state from file if it exists
-        if os.path.exists(state_file_path):  # noqa: PTH110
-            async with aiofiles.open(state_file_path, encoding="utf-8") as file:
-                try:
-                    content = await file.read()
-                    state_data = yaml.safe_load(content) or {}
-                except yaml.YAMLError as e:
-                    _LOGGER.error("Error reading YAML file: %s", e)
-                    state_data = {}
-
-            # Load state for the current address if it exists
-            if self._address in state_data:
-                self._set_state(state_data[self._address])
-            else:
-                return False
-        else:
-            return False
-
-        return True
+        return state_data
 
     def _get_state_file_path(self):
         """Get the full path to the state file."""
