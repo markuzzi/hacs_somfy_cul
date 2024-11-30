@@ -25,7 +25,6 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.restore_state import RestoreEntity
 from homeassistant.helpers.typing import ConfigType, DiscoveryInfoType
 
-from .cul import Cul
 from .const import (
     ATTR_CURRENT_POS,
     ATTR_DOWN_TIME,
@@ -45,6 +44,7 @@ from .const import (
     SERVICE_RELOAD,
     SERVICE_STOP,
 )
+from .cul import Cul
 
 
 class Command(vol.Enum):
@@ -151,10 +151,10 @@ class SomfyCulShade(RestoreEntity, CoverEntity):
     def __init__(
         self,
         hass: HomeAssistant,
-        somfy_cul:Cul,
-        address:str,
-        up_time:int=None,
-        down_time:int=None,
+        somfy_cul: Cul,
+        address: str,
+        up_time: int | None = None,
+        down_time: int | None = None,
         name="SomfyCover",
         reverse=False,
         device_class=CoverDeviceClass.SHADE,
@@ -272,11 +272,11 @@ class SomfyCulShade(RestoreEntity, CoverEntity):
         self._load_state_from_yaml()
 
     async def _save_state_to_yaml(self):
-        """Save the current state to the file using self._address as the key."""
+        """Save the current state to the file using self.entity_id as the key."""
         state_data = await self._read_state_yaml()
 
         # Update state for the current address
-        state_data[self._address] = self._get_state()
+        state_data[self.entity_id] = self._get_state()
 
         # Save updated state back to the file
         state_file_path = self._get_state_file_path()
@@ -284,12 +284,12 @@ class SomfyCulShade(RestoreEntity, CoverEntity):
             await file.write(yaml.safe_dump(state_data, default_flow_style=False))
 
     async def _load_state_from_yaml(self):
-        """Load the state for self._address from the file, if it exists."""
+        """Load the state for self.entity_id from the file, if it exists."""
         state_data = await self._read_state_yaml()
 
         # Load state for the current address if it exists
-        if self._address in state_data:
-            self._set_state(state_data[self._address])
+        if self.entity_id in state_data:
+            self._set_state(state_data[self.entity_id])
         else:
             return False
 
