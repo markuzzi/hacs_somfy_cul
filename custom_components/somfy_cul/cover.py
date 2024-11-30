@@ -179,6 +179,11 @@ class SomfyCulShade(RestoreEntity, CoverEntity):
         self._attr_is_opening = False
         self._attr_is_closing = False
 
+        self._attr_extra_state_attributes = {
+            "enc_key": self._enc_key,
+            "rolling_code": self._rolling_code,
+        }
+
         self._attr_device_info = DeviceInfo(
             identifiers={(DOMAIN, self._address)},
             manufacturer=MANUFACTURER,
@@ -326,7 +331,7 @@ class SomfyCulShade(RestoreEntity, CoverEntity):
         self._attr_current_cover_position = state.get(
             ATTR_CURRENT_POS, self._attr_current_cover_position
         )
-        self.schedule_update_ha_state()
+        self.schedule_update_ha_state(force_refresh=True)
 
     def _async_save_state(self):
         self.schedule_update_ha_state()
