@@ -1,5 +1,6 @@
 """Cover Platform for the Somfy MyLink component."""
 
+import asyncio
 import logging
 import os
 from threading import Timer
@@ -68,6 +69,7 @@ class Command(vol.Enum):
 CONFIG_FILE = "somfy_cover_state.yaml"
 
 _LOGGER = logging.getLogger(__name__)
+_STATE_FILE_LOCK = asyncio.Lock()
 
 PLATFORM_SCHEMA = COVER_PLATFORM_SCHEMA.extend(
     {
@@ -278,15 +280,18 @@ class SomfyCulShade(RestoreEntity, CoverEntity):
 
     async def _save_state_to_yaml(self):
         """Save the current state to the file using self.entity_id as the key."""
-        state_data = await self._read_state_yaml()
+        async with _STATE_FILE_LOCK:
+            state_data = await self._read_state_yaml()
 
-        # Update state for the current address
-        state_data[self.entity_id] = self._get_state()
+            # Update state for the current address
+            state_data[self.entity_id] = self._get_state()
 
-        # Save updated state back to the file
-        state_file_path = self._get_state_file_path()
-        async with aiofiles.open(state_file_path, mode="w", encoding="utf-8") as file:
-            await file.write(yaml.safe_dump(state_data, default_flow_style=False))
+            # Save updated state back to the file
+            state_file_path = self._get_state_file_path()
+            async with aiofiles.open(
+                state_file_path, mode="w", encoding="utf-8"
+            ) as file:
+                await file.write(yaml.safe_dump(state_data, default_flow_style=False))
 
     async def _load_state_from_yaml(self):
         """Load the state for self.entity_id from the file, if it exists."""
@@ -305,12 +310,18 @@ class SomfyCulShade(RestoreEntity, CoverEntity):
         state_file_path = self._get_state_file_path()
         state_data = {}
         if os.path.exists(state_file_path):  # noqa: PTH110
-            async with aiofiles.open(state_file_path, encoding="utf-8") as file:
-                try:
-                    content = await file.read()
-                    state_data = yaml.safe_load(content) or {}
-                except yaml.YAMLError as e:
-                    _LOGGER.error("Error reading YAML file: %s", e)
+            try:
+                async with aiofiles.open(state_file_path, encoding="utf-8") as file:
+                    try:
+                        content = await file.read()
+                        state_data = yaml.safe_load(content) or {}
+                    except yaml.YAMLError as e:
+                        _LOGGER.error("Error reading YAML file: %s", e)
+            except FileNotFoundError:
+                _LOGGER.debug(
+                    "State YAML file not existing: %s. Creating a new one",
+                    state_file_path,
+                )
         return state_data
 
     def _get_state_file_path(self):
