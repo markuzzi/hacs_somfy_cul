@@ -602,4 +602,10 @@ class SomfyCulShade(RestoreEntity, CoverEntity):
             + command_string[4:]
         )
         command_string = "Ys" + command_string + "\n"
+        _LOGGER.debug(
+            "Generated string %s from command %s for device %s",
+            command_string,
+            cmd,
+            self.name,
+        )
         return command_string.encode()

@@ -44,6 +44,7 @@ class Cul:
             _LOGGER.info(command_string.decode())
         elif self.serial:
             try:
+                _LOGGER.debug("Writing command %s to CUL device.", command_string)
                 self.serial.write(command_string)
                 self.serial.flush()
             except serial.SerialException as e:
