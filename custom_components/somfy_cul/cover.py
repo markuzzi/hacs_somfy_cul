@@ -588,24 +588,27 @@ class SomfyCulShade(RestoreEntity, CoverEntity):
         0 - Checksum (set to 0 for calculating checksum)
         RRRR - Rolling code
         SSSSSS - Address (= remote channel)
-
-        Actually address must be stored in little endian format. This is a bug,
-        but fixing this bug would make it necessary to pair all devices again :(
         """
         command_string = (
             f"A{self._enc_key:01X}{cmd.value}{self._rolling_code:04X}{self._address}"
         )
 
-        command_string = (
-            command_string[:3]
-            + self._calculate_checksum(command_string)
-            + command_string[4:]
-        )
-        command_string = "Ys" + command_string + "\n"
+        chksum = self._calculate_checksum(command_string)
+
+        command_string = command_string[:3] + chksum + command_string[4:]
         _LOGGER.debug(
             "Generated string %s from command %s for device %s",
             command_string,
-            cmd,
+            cmd.value,
             self.name,
         )
+        _LOGGER.debug(
+            "ENC Key: %s, CMD: %s, CHKSUM: %s, Rolling Code: %s, Address: %s",
+            self._enc_key,
+            cmd.value,
+            chksum,
+            self._rolling_code,
+            self._address,
+        )
+        command_string = "Ys" + command_string + "\n"
         return command_string.encode()
