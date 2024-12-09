@@ -1,30 +1,40 @@
 prog_cover:
+  name: "Prog Cover"
   description: "Set the cover into prog mode"
   fields:
     entity_id:
+      name: "Entity ID"
       description: "The entity ID of the cover"
       example: cover.somfy_cul_abcd
 open_cover:
+  name: "Open Cover"
   description: "Open the cover"
   fields:
     entity_id:
+      name: "Entity ID"
       description: "The entity ID of the cover"
       example: cover.somfy_cul_abcd
 close_cover:
+  name: "Close Cover"
   description: "Close the cover"
   fields:
     entity_id:
+      name: "Entity ID"
       description: "The entity ID of the cover"
       example: cover.somfy_cul_abcd
 stop_cover:
+  name: "Stop Cover"
   description: "Stop the cover"
   fields:
     entity_id:
+      name: "Entity ID"
       description: "The entity ID of the cover"
       example: cover.somfy_cul_abcd
 reload_state:
+  name: "Reload State"
   description: "Reload the state YAML file"
   fields:
     entity_id:
+      name: "Entity ID"
       description: "The entity ID of the cover"
       example: cover.somfy_cul_abcd
