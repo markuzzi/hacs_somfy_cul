@@ -10,9 +10,9 @@ Further information about the CUL: [Product page](http://busware.de/tiki-index.p
 
 ![hacs badge](https://img.shields.io/badge/HACS-Default-orange)
 
-SOMFY RTS CUL Integration can be installed via [HACS](https://hacs.xyz/), or by manually copying the [`somfy_cul`](https://github.com/markuzzi/hacs_somfy_cul) directory to Home Assistant's `config/custom_components/` directory.
+SOMFY RTS CUL Integration can be installed via [HACS](https://hacs.xyz/), or by manually copying the [`somfy_cul`](https://github.com/markuzzi/somfy_cul_integration) directory to Home Assistant's `config/custom_components/` directory.
 
-[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=markuzzi&repository=hacs_somfy_cul)
+[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=markuzzi&repository=somfy_cul_integration)
 
 ## Configuration
 
@@ -62,4 +62,4 @@ This project uses the MIT Licence, for more details see the [licence](/doc/licen
 
 # Showing Your Appreciation
 
-If you like this project, please give it a star on [GitHub](https://github.com/markuzzi/hacs_somfy_cul) or consider becoming a [Sponsor](https://github.com/sponsors/markuzzi).
+If you like this project, please give it a star on [GitHub](https://github.com/markuzzi/somfy_cul_integration) or consider becoming a [Sponsor](https://github.com/sponsors/markuzzi).
