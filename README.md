@@ -45,8 +45,8 @@ Once created, the integration will create a file name `somfy_cover_state.yaml` i
 # Contributing To The Project
 
 ![python badge](https://img.shields.io/badge/Made%20with-Python-orange)
-![github contributors](https://img.shields.io/github/contributors/markuzzi/hacs_somfy_cul?color=orange)
-![last commit](https://img.shields.io/github/last-commit/markuzzi/hacs_somfy_cul?color=orange)
+![github contributors](https://img.shields.io/github/contributors/markuzzi/somfy_cul_integration?color=orange)
+![last commit](https://img.shields.io/github/last-commit/markuzzi/somfy_cul_integration?color=orange)
 
 There are several ways of contributing to this project, they include:
 
