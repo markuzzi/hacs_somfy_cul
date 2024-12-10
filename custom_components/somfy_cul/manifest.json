@@ -5,11 +5,11 @@
     "@markuzzi"
   ],
   "dependencies": [],
-  "documentation": "https://github.com/markuzzi/hacs_somfy_cul",
+  "documentation": "https://github.com/markuzzi/somfy_cul_integration",
   "homekit": {},
   "integration_type": "hub",
   "iot_class": "assumed_state",
-  "issue_tracker": "https://github.com/markuzzi/hacs_somfy_cul/issues",
+  "issue_tracker": "https://github.com/markuzzi/somfy_cul_integration/issues",
   "requirements": [
     "pyserial==3.5"
   ],
